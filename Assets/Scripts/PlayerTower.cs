@@ -48,6 +48,12 @@ public class PlayerTower : MonoBehaviour
             }
             collisionTower.Break();
         }
+
+        if (other.TryGetComponent(out Obstacle obstacle))
+        {
+            var humansCountToDelete = obstacle.Height;
+            RemoveHumans(humansCountToDelete);
+        }
     }
 
     private void InsertHuman(Human insertHuman)
@@ -63,11 +69,11 @@ public class PlayerTower : MonoBehaviour
         human.transform.localRotation = Quaternion.identity;
     }
 
-    private void DisplaceCheckers(Human human)
+    private void DisplaceCheckers(Human human, int direction = 1)
     {
         float displaceScale = human.GetHeight();
         Vector3 distanceCheckerNewPosition = _distanceChecker.position;
-        distanceCheckerNewPosition.y -= human.transform.localScale.y * displaceScale;
+        distanceCheckerNewPosition.y -= human.transform.localScale.y * displaceScale * direction;
         _distanceChecker.position = distanceCheckerNewPosition;
         _checkCollider.center = _distanceChecker.localPosition;
     }
@@ -84,5 +90,16 @@ public class PlayerTower : MonoBehaviour
                 _humans[i].StartRandomAnimation();
             }
         }
+    }
+
+    private void RemoveHumans(int count)
+    {
+        for(var i = 0; i < count; i++)
+        {
+            DisplaceCheckers(_humans[i], -1);
+            Destroy(_humans[i].gameObject);
+            _humans.RemoveAt(i);
+        }
+        _humans[0].Run();
     }
 }

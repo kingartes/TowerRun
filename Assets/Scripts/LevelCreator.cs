@@ -10,6 +10,8 @@ public class LevelCreator : MonoBehaviour
     [SerializeField] private JumpBooster _jumpBoosterTemplate;
     [SerializeField] private int _humanTowerCount;
     [SerializeField] private float _boosterPossitionOffset;
+    [SerializeField] private Obstacle _obstacle;
+    [SerializeField] private int _obstacleCount;
 
     private void Start()
     {
@@ -29,6 +31,7 @@ public class LevelCreator : MonoBehaviour
             distanceTravelled += distanceBetweenTower;
             GenerateTower(distanceTravelled);            
         }
+        GenerateObstacles();
     }
 
     private void GenerateTower(float distanceTravelled)
@@ -42,5 +45,27 @@ public class LevelCreator : MonoBehaviour
     {
         Vector3 spawnPoint = _pathCreator.path.GetPointAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
         Instantiate(_jumpBoosterTemplate, spawnPoint, Quaternion.identity);
+    }
+
+    private void GenerateObstacle(float distanceTravelled)
+    {
+        Vector3 spawnPoint = _pathCreator.path.GetPointAtDistance(distanceTravelled, EndOfPathInstruction.Stop);
+        Vector3 rotation = _pathCreator.path.GetDirection(distanceTravelled, EndOfPathInstruction.Stop);
+        Obstacle obstacle = Instantiate(_obstacle, spawnPoint,Quaternion.Euler(rotation));
+    }
+
+    private void GenerateObstacles()
+    {
+        float roadLength = _pathCreator.path.length;
+        float distanceBetweenTower = roadLength / _obstacleCount;
+
+        float distanceTravelled = 0;
+
+
+        for (int i = 0; i < _obstacleCount; i++)
+        {
+            distanceTravelled += distanceBetweenTower;
+            GenerateObstacle(distanceTravelled);
+        }
     }
 }
