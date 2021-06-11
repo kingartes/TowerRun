@@ -44,7 +44,7 @@ public class PlayerTower : MonoBehaviour
                 }
 
                 HumanAdded?.Invoke(_humans.Count);
-                _humans[0].Run();
+                StartAnimations();
             }
             collisionTower.Break();
         }
@@ -70,5 +70,19 @@ public class PlayerTower : MonoBehaviour
         distanceCheckerNewPosition.y -= human.transform.localScale.y * displaceScale;
         _distanceChecker.position = distanceCheckerNewPosition;
         _checkCollider.center = _distanceChecker.localPosition;
+    }
+
+    private void StartAnimations()
+    {
+        for (var i = 0; i < _humans.Count; i++)
+        {
+            if (i == 0)
+            {
+                _humans[i].Run();
+            } else
+            {
+                _humans[i].StartRandomAnimation();
+            }
+        }
     }
 }

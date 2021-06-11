@@ -8,9 +8,9 @@ public class Human : MonoBehaviour
     private Animator _animator;
 
     private BoxCollider _colider;
+    private string[] _animations = new string[] { "isTexting", "isWaving", "isKicking", "isPuncing_Left", "isPuncing_Right" };
 
     public Transform FixationPoint => _fixationPoint;
-    
 
     public void Awake()
     {
@@ -32,6 +32,12 @@ public class Human : MonoBehaviour
     public void StopRun()
     {
         _animator.SetBool("isRunning", false);
+    }
+
+    public void StartRandomAnimation()
+    {
+        var animation = _animations[Random.Range(0, _animations.Length -1)];
+        _animator.SetBool(animation, true); 
     }
 
 }
