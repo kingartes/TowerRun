@@ -6,6 +6,7 @@ public class Tower : MonoBehaviour
 {
     [SerializeField] private Vector2Int _humanInTowerRange;
     [SerializeField] private Human[] _humansTemplate;
+    [SerializeField] private float _splashForce;
 
     private List<Human> _humanInTower;
 
@@ -56,6 +57,29 @@ public class Tower : MonoBehaviour
 
     public void Break()
     {
+        SplashHumans();
+        StartCoroutine(DestroyOnDelay());
+    }
+
+    private void SplashHumans()
+    {
+        foreach(var human in _humanInTower)
+        {
+            var humanRigidBody = human.GetComponent<Rigidbody>();
+            humanRigidBody.isKinematic = false;
+            
+            humanRigidBody.AddForce(GetSplashForce(), ForceMode.Impulse);
+        }
+    }
+
+    private IEnumerator DestroyOnDelay()
+    {
+        yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
+    }
+
+    private Vector3 GetSplashForce()
+    {
+        return new Vector3(Random.Range(0, 10) * _splashForce, Random.Range(0, 10) * _splashForce, Random.Range(0, 10) * _splashForce);
     }
 }

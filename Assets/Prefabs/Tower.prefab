@@ -48,3 +48,4 @@ MonoBehaviour:
   - {fileID: -6795416812112091600, guid: f618f09e6a391e8449ffbcfe7e33132e, type: 3}
   - {fileID: 1150731694861328737, guid: 5d5962e1bab37c045b2321e6007cca14, type: 3}
   - {fileID: -2290901257981816844, guid: 20e34489753d4df4ba71db54b18a93cd, type: 3}
+  _splashForce: 10
